@@ -1,3 +1,4 @@
+```
 $ nvc updateweights.c -o updateweights -acc -ta:tesla -Minfo=all 
 main:
      47, Generating create(X[:]) [if not already present]
@@ -23,13 +24,15 @@ updateweight:
         111, #pragma acc loop gang, vector(128) /* blockIdx.x threadIdx.x */
         113, #pragma acc loop seq
     113, Complex loop carried dependence of input->,W-> prevents parallelization
----
+```
 
+---
+```
 $ time ./updateweights
 DONE!
 
 real    0m0,204s
 user    0m0,032s
 sys     0m0,141s
-
+```
 ---
