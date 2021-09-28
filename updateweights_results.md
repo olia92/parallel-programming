@@ -1,3 +1,5 @@
+## OpenACC
+
 ```
 $ nvc updateweights.c -o updateweights -acc -ta:tesla -Minfo=all 
 main:
@@ -36,3 +38,14 @@ user    0m0,032s
 sys     0m0,141s
 ```
 ---
+
+## OpenMP
+
+```
+$ gcc -o updateweights-omp updateweights-omp.c -fopenmp && time ./updateweights-omp 
+DONE!
+
+real    0m0,013s
+user    0m0,037s
+sys     0m0,000s
+```
