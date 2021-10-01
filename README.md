@@ -1,6 +1,8 @@
 # parallel-programming
 
-**nn1-5.c** Νευρωνικό Δίκτυο, τυχαίες τιμές παραδειγμάτων
+
+[**nn1-5.c**](https://github.com/olia92/NeuralNetwork.git)  Νευρωνικό Δίκτυο, τυχαίες τιμές παραδειγμάτων. 
+
 ---
 
 ## Updateweights Serial
