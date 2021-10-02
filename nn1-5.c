@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <omp.h>
-#include "printing.h"
+#include "header/printing.h"
 
 // *******************************************************************
 // #pragma GCC optimize("O3","unroll-loops","omit-frame-pointer","inline", "unsafe-math-optimizations")
