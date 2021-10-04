@@ -34,3 +34,40 @@ user    1m17,040s
 sys     0m0,986s
 
 ```
+---
+
+## OpenACC
+
+##### #pragma acc kernels
+```
+$ nvc -acc -o fw -ta=tesla forward-acc.c -Minfo=all
+sigmoid:
+     33, Generating implicit acc routine seq
+         Generating acc routine seq
+         Generating Tesla code
+Initialise_W:
+    105, FMA (fused multiply-add) instruction(s) generated
+    109, FMA (fused multiply-add) instruction(s) generated
+forward:
+    122, Generating implicit copyout(y[:n]) [if not already present]
+         Generating implicit copyin(x[:m],w[:n][:m+1]) [if not already present]
+    123, Complex loop carried dependence of w-> prevents parallelization
+         Loop carried dependence of y-> prevents parallelization
+         Loop carried backward dependence of y-> prevents vectorization
+         Complex loop carried dependence of x-> prevents parallelization
+         Generating Tesla code
+        123, #pragma acc loop seq
+        125, #pragma acc loop vector(128) /* threadIdx.x */
+             Generating implicit reduction(+:sum)
+    125, Loop is parallelizable
+
+$ time ./fw 
+X[60000][784], WL1[100][785] - WL2[10][101]
+OL1[100] - OL2[10]
+DONE!
+
+real    1m31,069s
+user    1m28,518s
+sys     0m1,159s
+
+```
