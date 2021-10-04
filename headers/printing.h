@@ -43,5 +43,21 @@ fclose(filePointer);
     
 }
 
+//*********************************************************
+
+void SaveToFile(char *fileName,int n,double w[]){
+
+FILE *filePointer ; 
+
+filePointer = fopen(fileName, "w");
+
+for(int i=0;i<n;i++){
+    fprintf(filePointer,"%lf, \n",w[i]);
+}
+
+fclose(filePointer);
+    
+}
+
 #endif
 
