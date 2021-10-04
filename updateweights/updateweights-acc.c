@@ -3,7 +3,7 @@
 #include <math.h>
 #include <omp.h>
 #include <openacc.h>
-#include "printing.h"
+#include "../headers/printing.h"
 
 //************************************************************
 
