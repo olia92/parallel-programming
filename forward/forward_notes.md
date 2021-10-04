@@ -16,11 +16,11 @@ sys     0m1,250s
 # OpenMP
 ## forward-opm.c 
 ##### 
-|parallel for private(sum)|parallel for private(sum) <br> schedule(static, 100) |
-|---                      |---               |
-|real    0m33,699s        |real    0m48,522s |
-|user    1m17,040s        |user    2m10,050s |
-|sys      0m0,986s        |sys      0m1,145s |   
+|parallel for private(sum)|parallel for private(sum) <br> schedule(static, 100) |parallel for private(sum) <br> schedule(static, 10) |
+|---                      |---               |---               |
+|real    0m33,699s        |real    0m48,522s |real    0m33,485s |
+|user    1m17,040s        |user    2m10,050s |user    1m15,889s |
+|sys      0m0,986s        |sys      0m1,145s |sys      0m1,078s |
 
 ```
 $ gcc -o fw forward-omp.c -lm -fopenmp
