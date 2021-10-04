@@ -37,20 +37,20 @@ void forward(const int n,const int m,double w[n][m+1],double x[m],double y[n]);
 
 
 int main(){
-    // SaveWeightsToFile("./output_data/X_1.csv",M,N,X);
-    // SaveWeightsToFile("./output_data/W1_1.csv",NL1,N+1,WL1);
-    // SaveWeightsToFile("./output_data/W2_1.csv",NL2,NL1+1,WL2);
+    // SaveWeightsToFile("../output_data/X_1.csv",M,N,X);
+    // SaveWeightsToFile("../output_data/W1_1.csv",NL1,N+1,WL1);
+    // SaveWeightsToFile("../output_data/W2_1.csv",NL2,NL1+1,WL2);
 
 // #pragma acc data create(X[0:N],OL1[0:NL1],DL1[0:NL1],DL2[0:NL2]) copyout(WL1[0:NL1][0:N+1],WL2[0:NL2][0:NL1+1])
 // {
 printf("X[%d][%d], WL1[%d][%d] - WL2[%d][%d]\n",M,N,NL1,N+1,NL2,NL1+1);
-printf("           OL1[%d]     - OL2[%d]\n",NL1,NL2);
+printf("OL1[%d] - OL2[%d]\n",NL1,NL2);
     Initialise_X();
-    SaveWeightsToFile("./output_data/X.csv",M,N,X);
+    SaveWeightsToFile("../output_data/X.csv",M,N,X);
     Initialise_W();
-    // SaveWeightsToFile("./output_data/X_2.csv",M,N,X);
-    SaveToFile("./output_data/OL1_1.csv",NL1,OL1);
-    SaveToFile("./output_data/OL2_2.csv",NL2,OL2);
+    // SaveWeightsToFile("../output_data/X_2.csv",M,N,X);
+    SaveToFile("../output_data/OL1_1.csv",NL1,OL1);
+    SaveToFile("../output_data/OL2_2.csv",NL2,OL2);
 
 // }
     
@@ -60,12 +60,12 @@ printf("           OL1[%d]     - OL2[%d]\n",NL1,NL2);
         //calculte OL2
         forward(NL2,NL1,WL2,OL1,OL2);
     }
-    SaveToFile("./output_data/OL1_2.csv",NL1,OL1);
-    SaveToFile("./output_data/OL2_2.csv",NL2,OL2);
+    SaveToFile("../output_data/OL1_2.csv",NL1,OL1);
+    SaveToFile("../output_data/OL2_2.csv",NL2,OL2);
 
 
-    // SaveWeightsToFile("./output_data/W1_2.csv",NL1,  N+1,WL1);
-    // SaveWeightsToFile("./output_data/W2_2.csv",NL2,NL1+1,WL2);
+    // SaveWeightsToFile("../output_data/W1_2.csv",NL1,  N+1,WL1);
+    // SaveWeightsToFile("../output_data/W2_2.csv",NL2,NL1+1,WL2);
 
     printf("DONE!\n");
     return 0;
