@@ -132,7 +132,8 @@ sys     0m1,291s
 ```
 
 ```
-$ nvc -acc -o fw -ta=tesla forward-acc.parallel.c -Minfo=all -Msafeptr && time ./fwsigmoid:
+$ nvc -acc -o fw -ta=tesla forward-acc.parallel.c -Minfo=all -Msafeptr && time ./fw
+sigmoid:
      33, Generating implicit acc routine seq
          Generating acc routine seq
          Generating Tesla code
