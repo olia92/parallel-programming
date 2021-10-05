@@ -118,7 +118,7 @@ void forward(const int n,const int m,double w[n][m+1],double x[m],double y[n]){
     //m+1: bias
 
     double sum;
-    #pragma omp parallel for private(sum) schedule(static, 10)
+    
     for (int i=0;i<n;i++){
         sum=w[i][m];//bias
         for(int j=0;j<m;j++){

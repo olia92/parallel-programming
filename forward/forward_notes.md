@@ -38,7 +38,7 @@ sys     0m0,986s
 
 ## OpenACC
 
-##### #pragma acc kernels
+### #pragma acc kernels
 ```
 $ nvc -acc -o fw -ta=tesla forward-acc.c -Minfo=all
 sigmoid:
@@ -70,4 +70,88 @@ real    1m31,069s
 user    1m28,518s
 sys     0m1,159s
 
+```
+---
+### #pragma acc parallel loop 
+
+```
+$ nvc -acc -o fw -ta=tesla forward-acc.c -Minfo=all
+sigmoid:
+     33, Generating implicit acc routine seq
+         Generating acc routine seq
+         Generating Tesla code
+Initialise_W:
+    105, FMA (fused multiply-add) instruction(s) generated
+    109, FMA (fused multiply-add) instruction(s) generated
+forward:
+    120, Generating Tesla code
+        124, #pragma acc loop gang /* blockIdx.x */
+        126, #pragma acc loop vector(128) /* threadIdx.x */
+             Generating implicit reduction(+:sum)
+    120, Generating implicit copyout(y[:n]) [if not already present]
+         Generating implicit copyin(x[:m],w[:n][:m+1]) [if not already present]
+    126, Loop is parallelizable
+
+$ time ./fw 
+X[60000][784], WL1[100][785] - WL2[10][101]
+OL1[100] - OL2[10]
+DONE!
+
+real    0m54,386s
+user    0m51,799s
+sys     0m1,323s
+```
+### -Msafeptr -> Loop is parallelizable
+
+```
+$ nvc -acc -o fw -ta=tesla forward-acc.kernels.c -Minfo=all -Msafeptr && time ./fw
+sigmoid:
+     33, Generating implicit acc routine seq
+         Generating acc routine seq
+         Generating Tesla code
+Initialise_W:
+    104, FMA (fused multiply-add) instruction(s) generated
+    108, FMA (fused multiply-add) instruction(s) generated
+forward:
+    121, Generating implicit copyin(x[:m]) [if not already present]
+         Generating implicit copyout(y[:n]) [if not already present]
+         Generating implicit copyin(w[:n][:m+1]) [if not already present]
+    123, Loop is parallelizable
+         Generating Tesla code
+        123, #pragma acc loop gang /* blockIdx.x */
+        126, #pragma acc loop vector(128) /* threadIdx.x */
+             Generating reduction(+:sum)
+    126, Loop is parallelizable
+X[60000][784], WL1[100][785] - WL2[10][101]
+OL1[100] - OL2[10]
+DONE!
+
+real    0m55,094s
+user    0m53,182s
+sys     0m1,291s
+```
+
+```
+$ nvc -acc -o fw -ta=tesla forward-acc.parallel.c -Minfo=all -Msafeptr && time ./fwsigmoid:
+     33, Generating implicit acc routine seq
+         Generating acc routine seq
+         Generating Tesla code
+Initialise_W:
+    104, FMA (fused multiply-add) instruction(s) generated
+    108, FMA (fused multiply-add) instruction(s) generated
+forward:
+    119, Generating Tesla code
+        121, #pragma acc loop gang /* blockIdx.x */
+        123, #pragma acc loop vector(128) /* threadIdx.x */
+             Generating implicit reduction(+:sum)
+    119, Generating implicit copyout(y[:n]) [if not already present]
+         Generating implicit copyin(x[:m],w[:n][:m+1]) [if not already present]
+    123, Loop is parallelizable
+X[60000][784], WL1[100][785] - WL2[10][101]
+OL1[100] - OL2[10]
+DONE!
+
+real    0m59,191s
+user    0m57,100s
+sys     0m1,267s
 ```

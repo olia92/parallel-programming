@@ -35,7 +35,6 @@ void forward(const int n,const int m,double w[n][m+1],double x[m],double y[n]);
 
 
 
-
 int main(){
     // SaveWeightsToFile("../output_data/X_1.csv",M,N,X);
     // SaveWeightsToFile("../output_data/W1_1.csv",NL1,N+1,WL1);
@@ -118,7 +117,8 @@ void forward(const int n,const int m,double w[n][m+1],double x[m],double y[n]){
     //m+1: bias
 
     double sum;
-    #pragma omp parallel for private(sum) schedule(static, 10)
+
+#pragma acc parallel loop private(sum) //copyout(y[:])
     for (int i=0;i<n;i++){
         sum=w[i][m];//bias
         for(int j=0;j<m;j++){
@@ -126,4 +126,5 @@ void forward(const int n,const int m,double w[n][m+1],double x[m],double y[n]){
         }
         y[i]=sigmoid(sum);
     }   
+
 }
