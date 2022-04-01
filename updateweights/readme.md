@@ -3,7 +3,7 @@
 αρχικοποίηση  τιμών εισόδου `Χ[60000][784]={{1,2,...,784},...,{1,2,...,784}}`  
 έξοδοι 1ο Layer `OL1[100] = {1,2...100}`.  
 `DL1[100] = {1,2...100}`  
-`DL2[ 10] = {1,2... 10} ` 
+`DL2[ 10] = {1,2... 10} `  
 `α=0.01`
 
 Στο τέλος των επαναλήψεων περιμένουμε τα βάρη να περιέχουν τις τιμές 
@@ -55,7 +55,7 @@ updateweight:
 
 ## Parallel Construct
 
-αρχείο updateweights-parallel.c
+αρχείο updateweights-parallel.c  
 
 ```
 $ nvc updateweights-parallel.c -o updateweights-parallel -Minfo=all -acc -ta=tesla
@@ -70,5 +70,38 @@ updateweight:
         112, #pragma acc loop gang, vector(128) /* blockIdx.x threadIdx.x */
     109, Generating implicit copy(W[:n][k]) [if not already present]
          Generating implicit copyin(delta[:n]) [if not already present]
+
+$ time ./updateweights-parallel 
+X[60000][784], WL1[100][785] - WL2[10][101]
+OL1[100] - DL1[100] - DL2[10]
+DONE!
+
+real    2m3,439s
+user    2m2,811s
+sys     0m0,428s
 ```
+
+δεν γίνεται παραλληλοποίηση στον εσωτερικό βρόχο.    
+```c
+#pragma acc parallel loop 
+ for(int i=0;i<n;i++){
+        double temp=delta[i];
+        for(int j=0;j<k;j++){
+            W[i][j] += a*temp*input[j]; 
+        }        
+    }
+```
+δίνουμε την πληροφορία στον compiler προσθέτοντας loop construct  
+
+```c
+#pragma acc parallel loop 
+    for(int i=0;i<n;i++){
+        double temp=delta[i];
+#pragma acc loop
+        for(int j=0;j<k;j++){
+            W[i][j] += a*temp*input[j]; 
+        }        
+    }
+```
+
 
